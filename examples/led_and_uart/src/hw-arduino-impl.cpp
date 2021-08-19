@@ -3,6 +3,10 @@
 #include <Arduino.h>
 #include "config.h"
 
+#if defined(ARDUINO_ESP32_DEV) && !defined(LED_BUILTIN)
+#define LED_BUILTIN (2)
+#endif
+
 extern "C" void init_hardware() {
     Serial.begin(UART_BAUD_RATE);
 

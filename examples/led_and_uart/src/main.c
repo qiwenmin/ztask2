@@ -84,19 +84,7 @@ void init_tasks() {
     zt2_stop(d2.task_id);
 }
 
-#if defined(ARDUINO)
-
-void setup() {
-    init_hardware();
-
-    init_tasks();
-}
-
-void loop() {
-    zt2_poll();
-}
-
-#else
+#if !defined(ARDUINO)
 
 void main(void) {
     init_hardware();
