@@ -30,14 +30,16 @@ typedef enum {
     ZT2_TM_ONESHOT = 1
 } zt2_task_mode;
 
-int zt2_bind(zt2_task_func_t task_f, zt2_ticks_t interval, zt2_task_mode mode, void *data);
-void zt2_rebind(int id, zt2_task_func_t task_f, zt2_ticks_t interval, zt2_task_mode mode, void *data);
+typedef void *zt2_task;
 
-void zt2_update_mode(int id, zt2_task_mode mode);
-void zt2_update_interval(int id, zt2_ticks_t interval);
+zt2_task zt2_bind(zt2_task_func_t task_f, zt2_ticks_t interval, zt2_task_mode mode, void *data);
+void zt2_rebind(zt2_task t, zt2_task_func_t task_f, zt2_ticks_t interval, zt2_task_mode mode, void *data);
 
-void zt2_stop(int id);
-void zt2_resume(int id);
+void zt2_update_mode(zt2_task t, zt2_task_mode mode);
+void zt2_update_interval(zt2_task t, zt2_ticks_t interval);
+
+void zt2_stop(zt2_task t);
+void zt2_resume(zt2_task t);
 
 void zt2_poll();
 

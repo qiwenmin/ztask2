@@ -20,9 +20,9 @@ void zt2_init(zt2_config_t *cfg) {
     g.tick_f = cfg->tick_f;
 }
 
-void zt2_rebind(int id, zt2_task_func_t task_f, zt2_ticks_t interval, zt2_task_mode mode, void *data) {
-    if (id < g.task_count) {
-        zt2_task_t *p = g.tasks + id;
+void zt2_rebind(zt2_task t, zt2_task_func_t task_f, zt2_ticks_t interval, zt2_task_mode mode, void *data) {
+    if (t) {
+        zt2_task_t *p = t;
         p->task_f = task_f;
         p->interval = interval;
         mode_set(p->mode, mode);
@@ -30,30 +30,32 @@ void zt2_rebind(int id, zt2_task_func_t task_f, zt2_ticks_t interval, zt2_task_m
     }
 }
 
-int zt2_bind(zt2_task_func_t task_f, zt2_ticks_t interval, zt2_task_mode mode, void *data) {
+zt2_task zt2_bind(zt2_task_func_t task_f, zt2_ticks_t interval, zt2_task_mode mode, void *data) {
     if (g.task_count < g.size) {
-        int id = g.task_count++;
-        zt2_rebind(id, task_f, interval, mode, data);
-        zt2_resume(id);
-        return id;
+        zt2_task t = g.tasks + (g.task_count++);
+        zt2_rebind(t, task_f, interval, mode, data);
+        zt2_resume(t);
+        return t;
     }
     else
-        return -1;
+        return 0;
 }
 
-void zt2_update_mode(int id, zt2_task_mode mode) {
-    if (id < g.task_count)
-        mode_set(g.tasks[id].mode, mode);
+void zt2_update_mode(zt2_task t, zt2_task_mode mode) {
+    if (t) {
+        mode_set(((zt2_task_t *)t)->mode, mode);
+    }
 }
 
-void zt2_update_interval(int id, zt2_ticks_t interval) {
-    if (id < g.task_count)
-        g.tasks[id].interval = interval;
+void zt2_update_interval(zt2_task t, zt2_ticks_t interval) {
+    if (t) {
+        ((zt2_task_t *)t)->interval = interval;
+    }
 }
 
-void zt2_resume(int id) {
-    if (id < g.task_count) {
-        zt2_task_t *p = g.tasks + id;
+void zt2_resume(zt2_task t) {
+    if (t) {
+        zt2_task_t *p = t;
         if (!mode_is_running(p->mode)) {
             p->scheduled_at = g.tick_f();
             mode_set_running(p->mode);
@@ -61,9 +63,9 @@ void zt2_resume(int id) {
     }
 }
 
-void zt2_stop(int id) {
-    if (id < g.task_count) {
-        mode_set_stopped(g.tasks[id].mode);
+void zt2_stop(zt2_task t) {
+    if (t) {
+        mode_set_stopped(((zt2_task_t *)t)->mode);
     }
 }
 
