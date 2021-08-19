@@ -1,4 +1,5 @@
 #include "hw.h"
+#include "config.h"
 
 void toggle_led() {
     LED_PORT.ODR.byte ^= LED_PIN;
@@ -72,10 +73,8 @@ static void init_timer() {
 
 volatile uint8_t g_key;
 
-void UART_begin(uint32_t BR)
+void UART_begin()
 {
-    uint16_t val16;
-
 // for low-power device enable clock gating to USART1
 #if defined(FAMILY_STM8L101)
     sfr_CLK.PCKENR.PCKEN |= 0x20;
@@ -90,7 +89,7 @@ void UART_begin(uint32_t BR)
     sfr_UART.CR3.byte = 0x00;
 
     // set baudrate (note: BRR2 must be written before BRR1!)
-    val16 = (uint16_t)(((uint32_t)F_CPU) / BR);
+    uint16_t val16 = (uint16_t)(((uint32_t)F_CPU) / UART_BAUD_RATE);
     sfr_UART.BRR2.byte = (uint8_t)(((val16 & 0xF000) >> 8) | (val16 & 0x000F));
     sfr_UART.BRR1.byte = (uint8_t)((val16 & 0x0FF0) >> 4);
 
@@ -155,7 +154,7 @@ void init_hardware() {
     // switch to 16MHz (default is 2MHz)
     sfr_CLK.CKDIVR.byte = 0x00;
 
-    UART_begin(576000);
+    UART_begin();
 
     init_timer();
 

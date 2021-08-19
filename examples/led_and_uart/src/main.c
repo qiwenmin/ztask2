@@ -51,9 +51,7 @@ static zt2_ticks_t ticks_func() {
     return millis();
 }
 
-void main(void) {
-    init_hardware();
-
+void init_tasks() {
     // prepare ztask2
     zt2_config_t cfg = {
         .mem = task_mem,
@@ -67,14 +65,14 @@ void main(void) {
     zt2_bind(toggle_led_task, 500, ZT2_TM_REPEAT, &toggle_cnt);
 
     // uart output task with d1
-    uot_data_t d1 = {
+    static uot_data_t d1 = {
         .msg = "             Task#",
         .counter = 0,
     };
     d1.task_id = zt2_bind(uart_output_task, 700, ZT2_TM_REPEAT, &d1);
 
     // uart output task with d2
-    uot_data_t d2 = {
+    static uot_data_t d2 = {
         .msg = "                        Task#",
         .counter = 0,
     };
@@ -84,9 +82,31 @@ void main(void) {
     d2.pal_task_id = d1.task_id;
 
     zt2_stop(d2.task_id);
+}
+
+#if defined(ARDUINO)
+
+void setup() {
+    init_hardware();
+
+    init_tasks();
+}
+
+void loop() {
+    zt2_poll();
+}
+
+#else
+
+void main(void) {
+    init_hardware();
+
+    init_tasks();
 
     // main loop
     while (1) {
         zt2_poll();
     }
 }
+
+#endif // defined(ARDUINO)

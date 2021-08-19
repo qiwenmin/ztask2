@@ -16,6 +16,8 @@ void print_int32(int32_t v);
     #include "hw-stm8-def.inc"
 #elif defined(PIO_NATIVE_ENV)
     // nothing to include
+#elif defined(ARDUINO)
+    // nothing to include
 #else
     #error Unsupported hardware
 #endif
