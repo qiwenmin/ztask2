@@ -4,7 +4,7 @@
 #define mode_set_stopped(x) (x &= 0b01111111)
 #define mode_set_running(x) (x |= 0b10000000)
 #define mode_get(x) (x & 0b00000001)
-#define mode_set(x, m) (x &= (0b11111110 | m))
+#define mode_set(x, m) (x = (x & 0b11111110) | m)
 
 static struct {
     int task_count;

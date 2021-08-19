@@ -86,7 +86,7 @@ void init_tasks() {
 
 #if !defined(ARDUINO)
 
-void main(void) {
+int main(void) {
     init_hardware();
 
     init_tasks();
