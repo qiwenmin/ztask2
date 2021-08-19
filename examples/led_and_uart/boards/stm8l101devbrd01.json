@@ -1,0 +1,30 @@
+{
+    "build": {
+        "core": "sduino",
+        "extra_flags": "-DSTM8S_STM8L101DEVBRD01 -DSTM8L101",
+        "f_cpu": "16000000L",
+        "cpu": "stm8",
+        "mcu": "stm8l101f3p6",
+        "variant": "standard"
+    },
+    "frameworks": [
+        "arduino",
+        "spl"
+    ],
+    "debug": {
+        "svd_path": "STM8L101F3.svd",
+        "openocd_target": "stm8l101"
+    },
+    "upload": {
+        "maximum_ram_size": 1024,
+        "maximum_size": 8192,
+        "protocol": "serial",
+        "protocols": [
+            "serial",
+            "stlinkv2"
+        ]
+    },
+    "name": "STM8L101F3 Dev Board 01",
+    "url": "https://github.com/qiwenmin",
+    "vendor": "BG1REN"
+}
