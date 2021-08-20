@@ -74,7 +74,7 @@ void zt2_poll() {
         zt2_ticks_t curr = g.tick_f();
         if (mode_is_running(p->mode)
             && (curr - p->scheduled_at >= p->interval)) {
-            p->scheduled_at += p->interval;
+            p->scheduled_at = p->interval ? p->scheduled_at + p->interval : curr;
             p->task_f(p->data);
 
             if (mode_get(p->mode) == ZT2_TM_ONESHOT) {
