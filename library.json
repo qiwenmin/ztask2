@@ -1,6 +1,6 @@
 {
     "name": "ztask2",
-    "version": "0.0.1",
+    "version": "0.0.3",
     "description": "A simple task scheduler.",
     "keywords": "scheduler, task, timer",
     "repository": {
@@ -19,5 +19,9 @@
     "homepage": "https://github.com/qiwenmin/ztask2",
     "dependencies": {},
     "frameworks": "*",
-    "platforms": "*"
+    "platforms": "*",
+    "build": {
+        "includeDir": "lib/ztask2/include",
+        "srcDir": "lib/ztask2/src"
+    }
 }
