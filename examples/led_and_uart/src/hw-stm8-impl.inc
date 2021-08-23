@@ -5,7 +5,7 @@ void toggle_led() {
     LED_PORT.ODR.byte ^= LED_PIN;
 }
 
-static uint32_t __g_ms = 0;
+static volatile uint32_t __g_ms = 0;
 
 uint32_t millis() {
     uint32_t ret;
